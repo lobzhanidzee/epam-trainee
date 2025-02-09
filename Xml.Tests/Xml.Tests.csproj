@@ -13,6 +13,9 @@
     <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json"/>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Xml\Xml.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.SDK" Version="17.11.0-release-24352-06"/>
     <PackageReference Include="NUnit" Version="4.1.0"/>
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0">
@@ -21,6 +24,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JsonSerialization\JsonSerialization.csproj" />
+    <EmbeddedResource Include="BookAttributes\book-attributes.xsd"/>
+    <EmbeddedResource Include="BookElements\book-elements.xsd"/>
+    <EmbeddedResource Include="BookListAttributes\book-list-attributes.xsd"/>
+    <EmbeddedResource Include="BookListElements\book-list-elements.xsd"/>
+    <EmbeddedResource Include="BookListExtended\book-list-extended.xsd"/>
+    <EmbeddedResource Include="BookListGenres\book-list-genres.xsd"/>
+    <EmbeddedResource Include="BookListPublicationDate\book-list-publication-date.xsd"/>
+    <EmbeddedResource Include="Bookshops\bookshops.xsd"/>
+    <EmbeddedResource Include="BookNamespacePrefix\book-namespace-prefix.xsd"/>
+    <EmbeddedResource Include="BookNamespace\book-namespace.xsd"/>
   </ItemGroup>
 </Project>

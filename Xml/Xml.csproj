@@ -7,7 +7,6 @@
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <NoWarn>CA2227</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json"/>
@@ -17,5 +16,19 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="book-attributes.xml"/>
+    <EmbeddedResource Include="book-elements.xml"/>
+    <EmbeddedResource Include="book-list-attributes.xml"/>
+    <EmbeddedResource Include="book-list-elements.xml"/>
+    <EmbeddedResource Include="book-list-extended.xml"/>
+    <EmbeddedResource Include="book-list-genres.xml"/>
+    <EmbeddedResource Include="book-list-publication-date.xml"/>
+    <EmbeddedResource Include="book-namespace-prefix.xml"/>
+    <EmbeddedResource Include="book-namespace.xml"/>
+    <EmbeddedResource Include="bookshops.xml"/>
+    <EmbeddedResource Include="book-title-attribute.xml"/>
+    <EmbeddedResource Include="book-title-element.xml"/>
   </ItemGroup>
 </Project>

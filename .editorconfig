@@ -206,10 +206,13 @@ dotnet_diagnostic.IDE0055.severity = warning  # Formatting rule
 
 [*.cs]
 # Design rules
+dotnet_diagnostic.CA1002.severity = none
 dotnet_diagnostic.CA1014.severity = none      # Mark assemblies with CLSCompliantAttribute
+dotnet_diagnostic.CA1024.severity = none      # Use properties where appropriate
 dotnet_diagnostic.CA1031.severity = error     # Do not catch general exception types
 dotnet_diagnostic.CA1032.severity = error     # Implement standard exception constructors
 dotnet_diagnostic.CA1046.severity = error     # Do not overload operator equals on reference types
+dotnet_diagnostic.CA1062.severity = none      # Validate arguments of public methods  
 # Globalization rules
 dotnet_diagnostic.CA1303.severity = none      # Do not pass literals as localized parameters
 # Maintainability rules
@@ -227,11 +230,11 @@ dotnet_diagnostic.CA1724.severity = error     # Type names should not match name
 dotnet_diagnostic.CA1725.severity = error     # Parameter names should match base declaration
 # Performance rules
 dotnet_diagnostic.CA1806.severity = error     # Do not ignore method results
+dotnet_diagnostic.CA1819.severity = none
 # Reliability rules
 dotnet_diagnostic.CA2007.severity = none      # Do not directly await a Task
 # Usage rules
 dotnet_diagnostic.CA1801.severity = error     # Review unused parameters
-dotnet_diagnostic.CA1869.severity = none
 dotnet_diagnostic.CA2208.severity = error     # Instantiate argument exceptions correctly
 dotnet_diagnostic.CA2211.severity = error     # Non-constant fields should not be visible
 dotnet_diagnostic.CA2219.severity = error     # Do not raise exceptions in exception clauses
