@@ -1,264 +1,222 @@
-# XML
- 
-Intermediate level task for practicing using XML language.
+# XML Serialization Basics
 
-In this task, you will describe data structures using XML language. You will work with the `Books` data model and the book information taken from the [XmlDocument class documentation page](https://learn.microsoft.com/en-us/dotnet/api/system.xml.xmldocument).
+A beginner level task for practicing XML serialization with attributes.
 
-Estimated time to complete the task - 2h.
+In this task a student will learn the basics of XML serialization, will get acquainted with XML serialization attributes from `System.Xml.Serialization` namespace, and will learn how to use serialization attributes for managing the serialization process.
+Before starting the task learn [how to use attributes in C#](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attributes).
 
-The task requires .NET 8 SDK installed.    
-       
-         
+Estimated time to complete the task: 2h.
+
+The task requires .NET 8 SDK installed.
+
 ## Task Description
 
-**To complete the task, you need to take 12 steps**. Be aware that the order of XML elements is important for a successful unit test run. 
+**To complete the task, you need to take 9 steps**. Be aware that the order of XML elements is important for a successful unit test run. The task difficulty is growing from step to step, so the latest step is the most difficult.
+
+To successfully complete the task, please review the article [XML and SOAP serialization](https://learn.microsoft.com/en-us/dotnet/standard/serialization/xml-and-soap-serialization) and the first section of the article [XML serialization](https://learn.microsoft.com/en-us/dotnet/standard/serialization/introducing-xml-serialization).
 
 
-### 1. Add a Book Title with the "title" Element
+### 1. Serialize a Simple Class
 
-Add a new `title` element to `book` element with a book title "Pride And Prejudice" in the [book-title-element.xml](Xml/book-title-element.xml) file.
+First, read the following section: [Serialization of a Simple Class](https://learn.microsoft.com/en-us/dotnet/standard/serialization/introducing-xml-serialization#serialization-of-a-simple-class) and [Items That Can Be Serialized](https://learn.microsoft.com/en-us/dotnet/standard/serialization/introducing-xml-serialization#items-that-can-be-serialized).
 
-| Node Name | Node Type | Value               | Description   |
-|-----------|-----------|---------------------|---------------|
-| title     | element   | Pride And Prejudice | A book title. |
+Now, add auto-implemented properties with the public access modifier to the [SerializationWithoutAttributes/BookInfo](XmlSerializationBasics/SerializationWithoutAttributes/BookInfo.cs) class using information from the table below. Please be aware that the members' order affects the unit test results.
 
-Code sample:
+| Order | Member's Name   | Data Type | Member Type               | Access Modifier |
+|-------|-----------------|-----------|---------------------------|-----------------|
+| 1     | Title           | string    | Auto-implemented property | public          |
+| 2     | Price           | decimal   | Auto-implemented property | public          |
+| 3     | Genre           | string    | Auto-implemented property | public          |
+| 4     | Isbn            | string    | Auto-implemented property | public          |
+| 5     | PublicationDate | string    | Auto-implemented property | public          |
 
-```xml
-<book>
-  <title>Pride And Prejudice</title>
-</book>
-```
+Then, review the article on [how to: serialize an object](https://learn.microsoft.com/en-us/dotnet/standard/serialization/how-to-serialize-an-object). Before moving to the next step, analyze the `SerializeAndCompareWithSample<T>` method in the [SerializationTestFixtureBase](XmlSerializationBasics.Tests/SerializationTestFixtureBase.cs#L21) class and figure out how _XmlSerializer_ class is used there.
 
-
-### 2. Add the Book Title with the "title" Attribute
-
-Now, add a new `title` attribute to the `book` element with the book title "Pride And Prejudice" in the [book-title-attribute.xml](Xml/book-title-attribute.xml) file.
-
-| Node Name | Node Type | Value               | Description   |
-|-----------|-----------|---------------------|---------------|
-| title     | attribute | Pride And Prejudice | A book title. |
-
-Code sample:
-
-```xml
-<book title="Pride And Prejudice" />
-```
+Now, debug the [SerializeAndCompareWithSample](XmlSerializationBasics.Tests/SerializationWithoutAttributes/BookInfoTests.cs#L13) unit test in the [BookInfoTests.cs](XmlSerializationBasics.Tests/SerializationWithoutAttributes/BookInfoTests.cs) file and inspect the value of [actualXml](XmlSerializationBasics.Tests/SerializationTestFixtureBase.cs#L25) variable.
 
 
-### 3. Add a Namespace
+### 2. Control the Object Serialization with the XmlElement Attribute
 
-Add a new namespace with "http://www.contoso.com/book" URI to the `book` element in the [book-namespace.xml](Xml/book-namespace.xml) file.
+Read the article [Attributes That Control XML Serialization](https://learn.microsoft.com/en-us/dotnet/standard/serialization/attributes-that-control-xml-serialization).
 
-| Node Name | Node Type | Value                       | Description               |
-|-----------|-----------|-----------------------------|---------------------------|
-| book      | namespace | http://www.contoso.com/book | A root element namespace. |
+Apply `XmlRootAttribute` attribute with `ElementName` property to the [SerializationWithXmlElement/BookInfo](XmlSerializationBasics/SerializationWithXmlElement/BookInfo.cs) class to set `book` as the XML root element name.
 
 Code sample:
 
-```xml
-<book xmlns="http://www.contoso.com/book">
-  <title>Pride And Prejudice</title>
-</book>
+```cs
+[XmlRoot(ElementName = "book")]
+public class BookInfo
 ```
 
+Add auto-implemented properties with specified access modifier to the `BookInfo` class using information from the table below.
+Now, apply the `XmlElementAttribute` attributes with `ElementName` properties to set XML element names.
 
-### 4. Describe the Book with Elements
-
-Add the namespace and the elements from the table below to the `book` element in the [book-elements.xml](Xml/book-elements.xml) file.
-
-| Node Name       | Node Type | Value                       | Description               |
-|-----------------|-----------|-----------------------------|---------------------------|
-| book            | namespace | http://www.contoso.com/book | A root element namespace. |
-| title           | element   | Pride And Prejudice         | A book title.             |
-| price           | element   | 24.95                       | A book price in USD.      |
-| genre           | element   | novel                       | A book genre.             |
-| isbn            | element   | 1-861001-57-8               | An ISBN number.           |
-| publicationDate | element   | 1823-01-28                  | A publication date.       |
-
-
-### 5. Describe the Book with Attributes
-
-Add the namespace and the attributes from the table below to the `book` element in the [book-attributes.xml](Xml/book-attributes.xml) file.
-
-| Node Name       | Node Type | Value                       | Description               |
-|-----------------|-----------|-----------------------------|---------------------------|
-| book            | namespace | http://www.contoso.com/book | A root element namespace. |
-| title           | attribute | Pride And Prejudice         | A book title.             |
-| price           | attribute | 24.95                       | A book price in USD.      |
-| genre           | attribute | novel                       | A book genre.             |
-| isbn            | attribute | 1-861001-57-8               | An ISBN number.           |
-| publicationDate | attribute | 1823-01-28                  | A publication date.       |
-
-
-### 6. Add a Namespace with a Prefix
-
-First, add the namespace with "http://www.contoso.com/book" URI and the prefix `co` to the `book` element in the [book-namespace-prefix.xml](Xml/book-namespace-prefix.xml) file. Then, add the prefix to the elements `book` and `title`.
-
-| Node Name      | Node Type  | Value                       | Description               |
-|----------------|------------|-----------------------------|---------------------------|
-| book           | prefix     | co                          | A namespace prefix.       |
-| book           | namespace  | http://www.contoso.com/book | A root element namespace. |
+| Order | Member's Name   | Data Type |  Member Type               | Access Modifier | XML Element Name      |
+|-------|-----------------|-----------|----------------------------|-----------------|-----------------------|
+| 1     | Title           | string    | Auto-implemented property  | public          | book-title            |
+| 2     | Price           | decimal   | Auto-implemented property  | public          | book-price            |
+| 3     | Genre           | string    | Auto-implemented property  | public          | book-genre            |
+| 4     | Isbn            | string    | Auto-implemented property  | public          | book-isbn             |
+| 5     | PublicationDate | string    | Auto-implemented property  | public          | book-publication-date |
 
 Code sample:
 
-```xml
-<co:book xmlns:co="http://www.contoso.com/book" id="1">
-  <co:title>Pride And Prejudice</co:title>
-</co:book>
+```cs
+[XmlElement(ElementName = "book-title")]
+public string Title { get; set; }
 ```
 
 
-### 7. Describe the List of Books with Elements
+### 3. Customize the Object Serialization with the Namespace and Order Properties
 
-Add a list of books to the `books` root element in the [book-list-elements.xml](Xml/book-list-elements.xml) file. Each book is an XML structure with the `book` parent element that has a list of child elements like in step 4.
+Copy the `BookInfo` class from step 2 to the [SerializationWithOrder/BookInfo](XmlSerializationBasics/SerializationWithOrder/BookInfo.cs) class.
 
-| Title                 | Price | Genre | ISBN          | Publication Date |
-|-----------------------|-------|-------|---------------|------------------|
-| Pride And Prejudice   | 24.95 | novel | 1-861001-57-8 | 1823-01-28       |
-| The Handmaid's Tale   | 29.95 | novel | 1-861002-30-1 | 1985-01-01       |
-| Sense and Sensibility | 19.95 | novel | 1-861001-45-3 | 1811-01-01       |
-
-All XML elements should be prefixed with the `co` namespace. Only the root XML element `books` should have a namespace. 
-
-
-### 8. Describe the List of Books with Attributes
-
-Add the list of books to the `books` root element in the [book-list-attributes.xml](Xml/book-list-attributes.xml) file. Each book is an XML structure with the `book` element that has a list of attributes like in step 5. You will find all the necessary information in the list provided in step 7.  
-
-All XML elements should be prefixed with the `co` namespace. Only the root XML element `books` should have a namespace. 
-
-
-### 9.Add More Information
-
-First, copy the XML code from the [book-list-elements.xml](Xml/book-list-elements.xml) file to the [book-list-extended.xml](Xml/book-list-extended.xml) file. Then, add the following elements and attributes for all the books in the list.
-
-List of elements:
-
-| Node Name        | Node Type | Description                                     |
-|------------------|-----------|-------------------------------------------------|
-| id               | attribute | A book identifier.                              |
-| author           | element   | A book author.                                  |
-| country          | element   | A country where a book was initially published. |
-| title            | element   | A book title.                                   |
-| language         | element   | A book language.                                |
-| price            | element   | A book price in USD.                            |
-| genre            | element   | A book genre.                                   |
-| isbn             | element   | An ISBN number.                                 |
-| publicationDate  | element   | A publication date.                             |
-
-Book information:
-
-| Book ID | Author          | Country        | Title                 | Language | Price | Genre | ISBN          | Publication Date |
-|---------|-----------------|----------------|-----------------------|----------|-------|-------|---------------|------------------|
-| 1       | Jane Austen     | United Kingdom | Pride And Prejudice   | English  | 24.95 | novel | 1-861001-57-8 | 1823-01-28       |
-| 2       | Margaret Atwood | Canada         | The Handmaid's Tale   | English  | 29.95 | novel | 1-861002-30-1 | 1985-01-01       |
-| 3       | Jane Austen     | United Kingdom | Sense and Sensibility | English  | 19.95 | novel | 1-861001-45-3 | 1811-01-01       |
-
-All elements should have `co` namespace prefix. The only `books` root element should have a namespace.
-
-
-### 10. Decompose the Publication Date
-
-Copy the XML code from the [book-list-elements.xml](Xml/book-list-elements.xml) file to the [book-list-publication-date.xml](Xml/book-list-publication-date.xml) file and decompose the `publicationDate` element into three sub-elements (`publicationYear`, `publicationMonth` and `publicationDay`) for all books in the list. 
-
-New element structure:
-
-| Node Name                        | Node Type | Description                                     |
-|----------------------------------|-----------|-------------------------------------------------|
-| publicationDate                  | element   | A root node for publication date information.   |
-| publicationDate\publicationYear  | element   | A year of publication date.                     |
-| publicationDate\publicationMonth | element   | A month of publication date.                    |
-| publicationDate\publicationDay   | element   | A day of publication date.                      |
+Both `XmlRootAttribute` and `XmlElementAttribute` attributes have constructors that allow setting the name of an XML element. Read the documentation pages for `XmlRootAttribute` and `XmlElementAttribute` constructors and use the constructors to set the name for XML elements.
 
 Code sample:
 
-```xml
-<co:publicationDate>
-  <co:publicationYear>1823</co:publicationYear>
-  <co:publicationMonth>01</co:publicationMonth>
-  <co:publicationDay>28</co:publicationDay>
-</co:publicationDate>
+```cs
+[XmlRoot("book")]
+public class BookInfo
 ```
 
-All XML elements should be prefixed with the `co` namespace. Only the root XML element `books` should have a namespace. 
+Use the `Namespace` property of the `XmlRootAttribute` class to set [contoso.com/book](http://contoso.com/book) URI as the namespace for the root element of the `BookInfo` class:
 
+```cs
+[XmlRoot("book", Namespace = "http://contoso.com/book")]
+public class BookInfo
+```
 
-### 11. Add a Genre List
+Use the `Order` property of the `XmlElementAttribute` class to set the order of the element in the XML file as indicated in the XML Element Order column:
 
-Copy the XML code the [book-list-elements.xml](Xml/book-list-elements.xml) file to the [book-list-genres.xml](Xml/book-list-genres.xml) file and transform the `genre` element into the genre list for all books in the list.
-
-New element structure:
-
-| Node Name    | Node Type | Description                      |
-|--------------|-----------|----------------------------------|
-| genres       | element   | A root node for list of genres.  |
-| genres\genre | element   | A book genre.                    |
+| Order | Member's Name   | Data Type | Member Type               | Access Modifier | XML Element Name      | XML Element Order |
+|-------|-----------------|-----------|---------------------------|-----------------|-----------------------|-------------------|
+| 1     | Title           | string    | Auto-implemented property | public          | book-title            | 1                 |
+| 2     | Price           | decimal   | Auto-implemented property | public          | book-price            | 5                 |
+| 3     | Genre           | string    | Auto-implemented property | public          | book-genre            | 4                 |
+| 4     | Isbn            | string    | Auto-implemented property | public          | book-isbn             | 3                 |
+| 5     | PublicationDate | string    | Auto-implemented property | public          | book-publication-date | 2                 |
 
 Code sample:
 
-```xml
-<co:genres>
-  <co:genre>novel</co:genre>
-</co:genres>
+```cs
+[XmlElement("book-title", Order = 1)]
+public string Title { get; set; }
 ```
 
-While `genres` element defines the genre list, each `genre` element defines a specific genre.
 
-Replace the `novel` genre for all books with the genre list from the table below:
+### 4. Serialize a Class with Fields
 
-| Title                 | Genres                                                |
-|-----------------------|-------------------------------------------------------|
-| Pride And Prejudice   | Classic Regency novel<br />Romance novel              |
-| The Handmaid's Tale   | Dystopian novel<br />Speculative fiction<br />Tragedy |
-| Sense and Sensibility | Romance novel                                         |
+Apply the `XmlRootAttribute` attribute to the [FieldsSerialization/BookInfo](XmlSerializationBasics/FieldsSerialization/BookInfo.cs) class to set `book.info` as the name for the root XML element and [contoso.com/book-info](http://contoso.com/book-info) URI as the namespace.
 
+| XML Root Element Name | XML Root Element Namespace   |
+|-----------------------|------------------------------|
+| book.info             | http://contoso.com/book-info |
 
-All XML elements should be prefixed with the `co` namespace. Only the root XML element `books` should have a namespace. 
+Apply the `XmlElementAttribute` attributes for the fields `Price` and `Genre` as well as for the properties `Title`, `Isbn`, and `PublicationDate` to set the name and the order of the elements as in the table below:
 
+| Order | Member's Name   | Data Type |  Member Type               | Access Modifier | XML Element Name      | XML Element Order |
+|-------|-----------------|-----------|----------------------------|-----------------|-----------------------|-------------------|
+| 1     | Price           | decimal   | Field                      | public          | sell.price            | 4                 |
+| 2     | Genre           | string    | Field                      | public          | category              | 1                 |
+| 3     | isbn            | string    | Field                      | private         | -                     | -                 |
+| 4     | publicationDate | string    | Field                      | private         | -                     | -                 |
+| 5     | Title           | string    | Auto-implemented property  | public          | book.title            | 2                 |
+| 3     | Isbn            | string    | Property                   | public          | book.number           | 5                 |
+| 4     | PublicationDate | string    | Property                   | public          | pub.date              | 3                 |
 
-### 12. Complete the Bookshop List
+Fields `ISBN` and `publicationDate` should not be serialized, so apply the `XmlIgnoreAttribute` attribute to these fields.
 
-First, review the XML Schema and XML Schema Definition (XSD) tutorials. Then, read and analyze XML schemas for the XML files you created in the previous steps:
+Run unit tests, inspect the `actualResult`, and analyze the expected XML file [fields-serialization.xml](XmlSerializationBasics.Tests/FieldsSerialization/fields-serialization.xml).
 
-| Step | XML File                                                                          | XML Schema                                                                                                    |
-|------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
-| 3    | [book-namespace.xml](Xml/book-namespace.xml)                           | [book-namespace.xsd](Xml.Tests/BookNamespace/book-namespace.xsd)                                   |
-| 4    | [book-elements.xml](Xml/book-elements.xml)                             | [book-elements.xsd](Xml.Tests/BookElements/book-elements.xsd)                                      |
-| 5    | [book-attributes.xml](Xml/book-attributes.xml)                         | [book-attributes.xsd](Xml.Tests/BookAttributes/book-attributes.xsd)                                |
-| 6    | [book-namespace-prefix.xml](Xml/book-namespace-prefix.xml)             | [book-namespace-prefix.xsd](Xml.Tests/BookNamespacePrefix/book-namespace-prefix.xsd)               |
-| 7    | [book-list-elements.xml](Xml/book-list-elements.xml)                   | [book-list-elements.xsd](Xml.Tests/BookListElements/book-list-elements.xsd)                        |
-| 8    | [book-list-attributes.xml](Xml/book-list-attributes.xml)               | [book-list-attributes.xsd](Xml.Tests/BookListAttributes/book-list-attributes.xsd)                  |
-| 9    | [book-list-extended.xml](Xml/book-list-extended.xml)                   | [book-list-extended.xsd](Xml.Tests/BookListExtended/book-list-extended.xsd)                        |
-| 10   | [book-list-publication-date.xml](Xml/book-list-publication-date.xml)   | [book-list-publication-date.xsd](Xml.Tests/BookListPublicationDate/book-list-publication-date.xsd) |
-| 11   | [book-list-genres.xml](Xml/book-list-genres.xml)                       | [book-list-genres.xsd](Xml.Tests/BookListGenres/book-list-genres.xsd)                              |
-
-After that, study the XML schema in the [bookshops.xsd](Xml.Tests/Bookshops/bookshops.xsd) file.
-
-Now, complete the [bookshops.xml](Xml/bookshops.xml) with the bookshop data according to the XML schema. You can find the bookshop data in the [BookshopsTests.cs](Xml.Tests/Bookshops/BookshopsTests.cs) file.
+*Note:* The use of public fields instead of properties is [a bad practice for production applications](https://softwareengineering.stackexchange.com/questions/161303/is-it-bad-practice-to-use-public-fields). We use public fields in this task only for demonstration purposes. Read more about the benefits of properties in the article by Jon Skeet ["Why Properties Matter"](https://csharpindepth.com/articles/PropertiesMatter).
 
 
-## Fix Compiler Issues
+### 5. Control the Object Serialization with the XmlAttribute Attribute
 
-Only XML files should be affected by your changes. Neither errors nor warning messages are expected during the compilation process.
+Apply the `XmlRootAttribute` attribute to the [SerializationWithXmlAttributes/BookInfo](XmlSerializationBasics/SerializationWithXmlAttributes/BookInfo.cs) class using information from the table below:
+
+| XML Root Element Name | XML Root Element Namespace |
+|-----------------------|----------------------------|
+| book                  | http://contoso.com/book    |
+
+Add auto-implemented properties with the specified access modifier to the `BookInfo` class using information from the table below. The, apply `XmlAttributeAttribute` attributes to specify that the `XmlSerializer` must serialize the class members as XML attributes:
+
+| Order | Member's Name   | Data Type | Member Type                | Access Modifier | XML Attribute Name      |
+|-------|-----------------|-----------|----------------------------|-----------------|-------------------------|
+| 1     | Title           | string    | Auto-implemented property  | public          | title                   |
+| 2     | Price           | decimal   | Auto-implemented property  | public          | price                   |
+| 3     | Genre           | string    | Auto-implemented property  | public          | genre                   |
+| 4     | Isbn            | string    | Auto-implemented property  | public          | isbn                    |
+| 5     | PublicationDate | string    | Auto-implemented property  | public          | publication-date        |
+
+Code sample:
+
+```cs
+[XmlAttribute("title")]
+public string Title { get; set; }
+```
 
 
-## Task Checklist
+### 6. Serialize Complex Structures
 
-1. Rebuild the solution.
-1. Run all unit tests with Visual Studio and make sure there are no failed unit tests. Fix your code to make all tests GREEN. 
-1. Review all changes, make sure only XML files (.xml) in the [Xml](Xml\) project have been changed. Make sure there are no changes in C# (.cs) and project files (.csproj) or in the [Xml.Tests](Xml.Tests\) project.
-1. Stage your changes and create a commit.
-1. Commit and push your code to the remote task repository.
+Apply `XmlRootAttribute`, `XmlElementAttribute`, and `XmlAttributeAttribute` to classes in the [ComplexStructures](XmlSerializationBasics/ComplexStructures) folder ([BookInfo](XmlSerializationBasics/ComplexStructures/BookInfo.cs), [BookTitle](XmlSerializationBasics/ComplexStructures/BookTitle.cs), [BookPrice](XmlSerializationBasics/ComplexStructures/BookPrice.cs), and [BookPublicationDate](XmlSerializationBasics/ComplexStructures/BookPublicationDate.cs)) and the class members to ensure correct serialization of the `BookInfo` class. The final XML file should look like [complex-structures.xml](XmlSerializationBasics.Tests/ComplexStructures/complex-structures.xml) XML file.
 
 
-## See also
+### 7. Serialize an Array as a Sequence of Elements
 
-* Tutorials
-  * [XML Tutorial on w3schools.com](https://www.w3schools.com/xml)
-  * [XML Tutorial on tutorialspoint.com](https://www.tutorialspoint.com/xml)
-  * [XML Schema (XSD Schema) Tutorial](https://www.w3schools.com/xml/schema_intro.asp)
-  * [XSD Tutorial](https://www.tutorialspoint.com/xsd/)
-* [XmlDocument Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.xmldocument)
-* [XML](https://en.wikipedia.org/wiki/XML)
-* [Extensible Markup Language (XML)](https://www.w3.org/XML/)
+Read the section [Serializing an Array as a Sequence of Elements](https://learn.microsoft.com/en-us/dotnet/standard/serialization/controlling-xml-serialization-using-attributes#serializing-an-array-as-a-sequence-of-elements).
+
+Analyze the expected XML file [sequence.xml](XmlSerializationBasics.Tests/Sequence/sequence.xml) and take the following steps:
+* Add auto-implemented properties to the [Sequence/BookInfo](XmlSerializationBasics/Sequence/BookInfo.cs) class using the information from the table below.
+* Apply the `XmlRootAttribute` attribute to the `BookInfo` class.
+* Apply the `XmlElementAttribute` attributes to the properties.
+
+| Order | Member's Name    | Data Type   | Member Type                | Access Modifier | XML Element Name                   | XML Element Order  |
+|-------|------------------|-------------|----------------------------|-----------------|------------------------------------|--------------------|
+| 1     | Titles           | string[]    | Auto-implemented property  | public          | title                              | 3                  |
+| 2     | Prices           | decimal[]   | Auto-implemented property  | public          | price                              | 4                  |
+| 3     | Genres           | string[]    | Auto-implemented property  | public          | genre                              | 1                  |
+| 4     | Codes            | string[]    | Auto-implemented property  | public          | international-standard-book-number | 2                  |
+| 5     | PublicationDates | string[]    | Auto-implemented property  | public          | publication-date                   | 5                  |
+
+
+### 8. Serialize an Array of Objects
+
+Read the sections [Serializing an Array of Objects](https://learn.microsoft.com/en-us/dotnet/standard/serialization/examples-of-xml-serialization#serializing-an-array-of-objects) and [Controlling Array Serialization](https://learn.microsoft.com/en-us/dotnet/standard/serialization/controlling-xml-serialization-using-attributes#controlling-array-serialization).
+
+Analyze the expected XML file [arrays.xml](XmlSerializationBasics.Tests/Arrays/arrays.xml) and take the following steps:
+* Add auto-implemented properties to the [Arrays/BookInfo](XmlSerializationBasics/Arrays/BookInfo.cs) class using the information from the table below.
+* Apply the `XmlRootAttribute` attribute to the `BookInfo` class.
+* Apply the `XmlArrayAttribute` and `XmlArrayItemAttribute` attributes to the properties.
+
+| Order | Member's Name    | Data Type   | Member Type                | Access Modifier | XML Array Element Name              | XML Array Element Item Name        | XML Element Order |
+|-------|------------------|-------------|----------------------------|-----------------|-------------------------------------|------------------------------------|-------------------|
+| 1     | Titles           | string[]    | Auto-implemented property  | public          | titles                              | title                              | 1                 |
+| 2     | Prices           | decimal[]   | Auto-implemented property  | public          | prices                              | price                              | 5                 |
+| 3     | Genres           | string[]    | Auto-implemented property  | public          | genres                              | genre                              | 2                 |
+| 4     | Codes            | string[]    | Auto-implemented property  | public          | international-standard-book-numbers | international-standard-book-number | 4                 |
+| 5     | PublicationDates | string[]    | Auto-implemented property  | public          | publication-dates                   | publication-date                   | 3                 |
+
+
+### 9. Purchase Order
+
+Read the section [Purchase Order Example](https://learn.microsoft.com/en-us/dotnet/standard/serialization/examples-of-xml-serialization#purchase-order-example). A similar data structure is used in this step.
+
+Analyze the expected XML file [purchase-order.xml](XmlSerializationBasics.Tests/PurchaseOrderExample/purchase-order.xml). Apply all necessary attributes from the [System.Xml.Serialization namespace](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization) to classes in the [PurchaseOrderExample](XmlSerializationBasics/PurchaseOrderExample) folder ([PurchaseOrder](XmlSerializationBasics/PurchaseOrderExample/PurchaseOrder.cs), [Address](XmlSerializationBasics/PurchaseOrderExample/Address.cs), [DeliveryDate](XmlSerializationBasics/PurchaseOrderExample/DeliveryDate.cs), and [OrderedItem](XmlSerializationBasics/PurchaseOrderExample/OrderedItem.cs)) to ensure that the actual XML produced by `XmlSerializer` conforms to the expected XML file.
+
+
+## See Also
+
+* C# Programming Guide
+  * [Auto-Implemented Properties](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/auto-implemented-properties)
+  * [Access Modifiers](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers)
+  * [Attributes](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attributes)
+* .NET API
+  * [XmlSerializer Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization.xmlserializer)
+  * [XmlRootAttribute Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization.xmlrootattribute)
+  * [XmlElementAttribute Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization.xmlelementattribute)
+  * [XmlAttributeAttribute Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization.xmlattributeattribute)
+  * [XmlIgnore Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization.xmlignoreattribute)
+  * [XmlArrayAttribute Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization.xmlarrayattribute)
+  * [XmlArrayItemAttribute Class](https://learn.microsoft.com/en-us/dotnet/api/system.xml.serialization.xmlarrayitemattribute)
