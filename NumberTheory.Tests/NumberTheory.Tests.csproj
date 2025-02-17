@@ -7,13 +7,13 @@
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <NoWarn>CA1707,CA1861</NoWarn>
+    <NoWarn>CA1707,CA1861,CA1062</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PalindromeNumberFiltering\PalindromeNumberFiltering.csproj" />
+    <ProjectReference Include="..\NumberTheory\NumberTheory.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.20.70" />
