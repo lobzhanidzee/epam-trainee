@@ -1,107 +1,26 @@
-# Task Parallel Library
+# Filtering Palindromes Numbers: Sequential and Parallel Approaches
 
-Intermediate level task for practicing Task Parallel Library.
+Intermediate level task for practicing `Parallel.ForEach` for CPU-bound operations.
 
-Estimated time to complete the task - 1.0h.
+Estimated time to complete the task - 1.5h.
 
 The task requires .NET 8 SDK installed.
 
-
 ## Task Description
 
-This task helps in better understanding of Task Parallel Library.
+Implement a `Selector` static class that contains methods for filtering palindrome numbers from a collection of integers. The class provides two different approaches for filtering palindrome numbers: sequential filtering and parallel filtering.
 
+Implement the following methods in the [Selector](/PalindromeNumberFiltering/Selector.cs) class:
 
-### 1. Check whether the status of the task is 'TaskCreated'.
-Implement [TaskCreated](Tpl/StudentLogic.cs#L5) method of the *StudentLogic* class:
-* Create a new task and return it.
-* Return type of the method is 'task'.
+- `GetPalindromeInSequence`: This method retrieves a collection of palindrome numbers from the given list of integers using sequential filtering. The method utilizes the private `IsPalindrome` method to determine whether a number is a palindrome or not.
 
-### 2. Check whether the status of the task is 'WaitingForActivation'.
-Implement [WaitingForActivation](Tpl/StudentLogic.cs#L11) method of the *StudentLogic* class:
-* Write a code with the help of the below method in such a way that the status of the task is 'WaitingForActivation'. 
+- `GetPalindromeInParallel`: This method retrieves a collection of palindrome numbers from the given list of integers using parallel filtering. The method utilizes parallel processing with [Parallel.ForEach](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-write-a-simple-parallel-foreach-loop) to filter palindrome numbers concurrently and [ConcurrentBag](https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentbag-1?view=net-7.0) to store the result. It also uses the private `IsPalindrome` method to check whether a number is a palindrome.
 
-```cs
-private static async Task<string> Foo(int seconds)
-        {
-            return await Task.Run(() =>
-            {
-                for (int i = 0; i < seconds; i++)
-                {
-                    Task.Delay(TimeSpan.FromSeconds(1)).Wait();
-                }
+The `Selector` class contains several private helper methods:
+- `IsPalindrome`: This private method checks whether the given integer is a palindrome number. It first verifies that the number is non-negative and then uses the `IsPositiveNumberPalindrome` method to perform a recursive check on positive numbers.
+- `IsPositiveNumberPalindrome`: This private method recursively checks whether a positive number is a palindrome. It compares the first digit with the last digit and proceeds with the check by removing these digits from the number until the number becomes less than 10.
+- `GetLength`: This private method calculates the number of digits in the given integer. It uses a switch statement to handle different ranges of numbers efficiently.
 
-                return "Foo Completed";
-            });
-        }
-```
-Paste the above code in [StudentLogic.cs](Tpl/StudentLogic.cs) file.
+_Note_: To determine if a number is a palindrome, you must implement the solution without using arrays, collections, or the string class: use only basic numerical operations and logical comparisons.
 
-* Return type of the method is 'task'.
-
-### 3. Check whether the status of the task is 'WaitingToRun'.
-Implement [WaitingToRun](Tpl/StudentLogic.cs#L17) method of the *StudentLogic* class:
-* Write a code in such a way that the status of the task is 'WaitingToRun'.
-* Return type of the method is 'task'.
-
-### 4. Check whether the status of the task is 'Running'.
-Implement [Running](Tpl//StudentLogic.cs#L23) method of the *StudentLogic* class:
-* Write a code in such a way that the status of the task is 'Running'.
-* Return type of the method is 'task'.
-
-### 5. Check whether the status of the task is 'RanToCompletion'.
-Implement [RanToCompletion](Tpl//StudentLogic.cs#L29) method of the *StudentLogic* class:
-* Write a code in such a way that the status of the task is 'RanToCompletion'.
-* Return type of the method is 'task'.
-
-### 6. Check whether the status of the task is 'WaitingForChildrenToComplete'.
-Implement [WaitingForChildrenToComplete](Tpl//StudentLogic.cs#L35) method of the *StudentLogic* class:
-* Write a code in such a way that the status of the task is 'WaitingForChildrenToComplete'.
-* Return type of the method is 'task'.
-
-### 7. Check whether the status of the task 'IsCompleted'.
-Implement [IsCompleted](Tpl//StudentLogic.cs#L41) method of the *StudentLogic* class:
-* Write a code in such a way that the status of the task is 'IsCompleted'.
-* Return type of the method is 'task'.
-
-### 8. Check whether the status of the task 'IsCancelled'.
-Implement [IsCancelled](Tpl//StudentLogic.cs#L47) method of the *StudentLogic* class:
-* Write a code in such a way that the status of the task is 'IsCancelled'.
-* Return type of the method is 'task'.
-
-### 9. Check whether the status of the task 'IsFaulted'.
-Implement [IsFaulted](Tpl//StudentLogic.cs#L53) method of the *StudentLogic* class:
-* Write a code in such a way that the status of the task is 'IsFaulted'.
-* Return type of the method is 'task'.
-
-### 10. Demonstrate 'ForceParallelismPlinq' execution.
-Implement [ForceParallelismPlinq](Tpl//StudentLogic.cs#L59) method of the *StudentLogic* class:
-* Write a code with the help of the list provided in the below code snippet, iterate parallely over 'testList' using PLINQ, store the result in a new list of type 'int' and return it.
-
-```cs
- var testList = Enumerable.Range(1, 300).ToList();
-```
-* Return type of the method is list of type 'int'.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+To get insights into the benefits of parallel processing when dealing with computationally intensive tasks like filtering palindrome numbers from a large collection of integers compare the efficiency of the two approaches in terms of performance (see [GetPalindromeInParallel_PerformanceTest](PalindromeNumberFiltering.Tests/SelectorTestsParallelApproach.cs#L28) and [GetPalindromeInSequence_PerformanceTest](PalindromeNumberFiltering.Tests/SelectorTestsSequentialApproach.cs#L24)). 
