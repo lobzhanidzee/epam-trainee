@@ -103,6 +103,7 @@ csharp_style_deconstructed_variable_declaration = true:suggestion
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_style_prefer_local_over_anonymous_function = true:suggestion
 csharp_style_inlined_variable_declaration = true:suggestion
+csharp_style_namespace_declarations = file_scoped
 
 ###############################
 # C# Formatting Rules         #
@@ -205,10 +206,13 @@ dotnet_diagnostic.IDE0055.severity = warning  # Formatting rule
 
 [*.cs]
 # Design rules
-dotnet_diagnostic.CA1014.severity = error     # Mark assemblies with CLSCompliantAttribute
+dotnet_diagnostic.CA1002.severity = none
+dotnet_diagnostic.CA1014.severity = none      # Mark assemblies with CLSCompliantAttribute
+dotnet_diagnostic.CA1024.severity = none      # Use properties where appropriate
 dotnet_diagnostic.CA1031.severity = error     # Do not catch general exception types
 dotnet_diagnostic.CA1032.severity = error     # Implement standard exception constructors
 dotnet_diagnostic.CA1046.severity = error     # Do not overload operator equals on reference types
+dotnet_diagnostic.CA1062.severity = none      # Validate arguments of public methods  
 # Globalization rules
 dotnet_diagnostic.CA1303.severity = none      # Do not pass literals as localized parameters
 # Maintainability rules
@@ -226,6 +230,8 @@ dotnet_diagnostic.CA1724.severity = error     # Type names should not match name
 dotnet_diagnostic.CA1725.severity = error     # Parameter names should match base declaration
 # Performance rules
 dotnet_diagnostic.CA1806.severity = error     # Do not ignore method results
+dotnet_diagnostic.CA1814.severity = none
+dotnet_diagnostic.CA1819.severity = none
 # Reliability rules
 dotnet_diagnostic.CA2007.severity = none      # Do not directly await a Task
 # Usage rules
@@ -233,6 +239,7 @@ dotnet_diagnostic.CA1801.severity = error     # Review unused parameters
 dotnet_diagnostic.CA2208.severity = error     # Instantiate argument exceptions correctly
 dotnet_diagnostic.CA2211.severity = error     # Non-constant fields should not be visible
 dotnet_diagnostic.CA2219.severity = error     # Do not raise exceptions in exception clauses
+dotnet_diagnostic.CA5394.severity = none
 
 ###############################
 # StyleCop Rules              #
@@ -246,8 +253,8 @@ dotnet_diagnostic.SA1002.severity = warning   # SemicolonsMustBeSpacedCorrectly
 dotnet_diagnostic.SA1003.severity = warning   # SymbolsMustBeSpacedCorrectly
 dotnet_diagnostic.SA1008.severity = warning   # OpeningParenthesisMustBeSpacedCorrectly
 dotnet_diagnostic.SA1009.severity = warning   # ClosingParenthesisMustBeSpacedCorrectly
-dotnet_diagnostic.SA1010.severity = warning   # OpeningSquareBracketsMustBeSpacedCorrectly
-dotnet_diagnostic.SA1011.severity = warning   # ClosingSquareBracketsMustBeSpacedCorrectly
+dotnet_diagnostic.SA1010.severity = none   # OpeningSquareBracketsMustBeSpacedCorrectly
+dotnet_diagnostic.SA1011.severity = none   # ClosingSquareBracketsMustBeSpacedCorrectly
 dotnet_diagnostic.SA1012.severity = warning   # OpeningBracesMustBeSpacedCorrectly
 dotnet_diagnostic.SA1013.severity = warning   # ClosingBracesMustBeSpacedCorrectly
 dotnet_diagnostic.SA1014.severity = warning   # OpeningGenericBracketsMustBeSpacedCorrectly
@@ -269,6 +276,7 @@ dotnet_diagnostic.SA1101.severity = warning   # PrefixLocalCallsWithThis
 dotnet_diagnostic.SA1106.severity = error     # CodeMustNotContainEmptyStatements
 dotnet_diagnostic.SA1107.severity = error     # CodeMustNotContainMultipleStatementsOnOneLine
 dotnet_diagnostic.SA1110.severity = warning   # OpeningParenthesisMustBeOnDeclarationLine
+dotnet_diagnostic.SA1118.severity = none
 dotnet_diagnostic.SA1121.severity = error     # UseBuiltInTypeAlias
 dotnet_diagnostic.SA1133.severity = none      # DoNotCombineAttributes
 # Ordering rules

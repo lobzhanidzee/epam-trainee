@@ -1,26 +1,41 @@
-# Filtering Palindromes Numbers: Sequential and Parallel Approaches
+# Conway’s Game of Life
 
-Intermediate level task for practicing `Parallel.ForEach` for CPU-bound operations.
+Beginner level task for practicing of the Task Parallel Library features.
 
-Estimated time to complete the task - 1.5h.
+Estimated time to complete the task - 3h.
 
 The task requires .NET 8 SDK installed.
 
-## Task Description
+## Task description
 
-Implement a `Selector` static class that contains methods for filtering palindrome numbers from a collection of integers. The class provides two different approaches for filtering palindrome numbers: sequential filtering and parallel filtering.
+Implement a simulation of [Conway's Game of Life](https://www.wikiwand.com/en/Conway%27s_Game_of_Life), a classic cellular automaton devised by mathematician John Conway. This zero-player game involves a grid of cells that can be in one of two states: alive (populated) or dead. The game evolves over generations based on a set of simple rules, and no further input is required once the initial state is set. The rules determine the state of each cell in the next generation based on the current state of the cell and the states of its eight neighboring cells.
 
-Implement the following methods in the [Selector](/PalindromeNumberFiltering/Selector.cs) class:
+### Task Details
 
-- `GetPalindromeInSequence`: This method retrieves a collection of palindrome numbers from the given list of integers using sequential filtering. The method utilizes the private `IsPalindrome` method to determine whether a number is a palindrome or not.
+1. Implement `GameOfLifeSequentialVersion` class that represents the sequencial version of the game and provides methods to simulate the evolution of the grid based on the rules. The class offers the following functionalities:
+- `Constructors`: You must implement two constructors. The first constructor initializes a new game grid with the specified number of rows and columns. The initial state of the grid is randomly set with alive or dead cells. The second constructor initializes a new game grid using a given 2D array representing the initial state.
+- `CurrentGeneration` property: This property returns a copy of the current generation grid as a separate 2D array.
+- `Generation` property: This property gets the current generation number.
+- `Restart` method: This method resets the game by setting the current grid to the initial state.
+- `NextGeneration` method: This method advances the game to the next generation based on the rules of Conway's Game of Life.
+- `CountAliveNeighbors` method: This method counts the number of alive neighbors for a given cell in the grid.
 
-- `GetPalindromeInParallel`: This method retrieves a collection of palindrome numbers from the given list of integers using parallel filtering. The method utilizes parallel processing with [Parallel.ForEach](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-write-a-simple-parallel-foreach-loop) to filter palindrome numbers concurrently and [ConcurrentBag](https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentbag-1?view=net-7.0) to store the result. It also uses the private `IsPalindrome` method to check whether a number is a palindrome.
+2. Implement `GameOfLifeParallelVersion` class that represents the parallel version of the game and provides methods to simulate the evolution of the grid based on the rules. The class offers the following functionalities:
+- `Constructors`: You must implement two constructors. The first constructor initializes a new game grid with the specified number of rows and columns. The initial state of the grid is randomly set with alive or dead cells. The second constructor initializes a new game grid using a given 2D array representing the initial state.
+- `CurrentGeneration` property: This property returns a copy of the current generation grid as a separate 2D array.
+- `Generation` property: This property gets the current generation number.
+- `Restart` method: This method resets the game by setting the current grid to the initial state.
+- `NextGeneration` method: This method advances the game to the next generation based on the rules of Conway's Game of Life.
+- `CountAliveNeighbors` method: This method counts the number of alive neighbors for a given cell in the grid.
 
-The `Selector` class contains several private helper methods:
-- `IsPalindrome`: This private method checks whether the given integer is a palindrome number. It first verifies that the number is non-negative and then uses the `IsPositiveNumberPalindrome` method to perform a recursive check on positive numbers.
-- `IsPositiveNumberPalindrome`: This private method recursively checks whether a positive number is a palindrome. It compares the first digit with the last digit and proceeds with the check by removing these digits from the number until the number becomes less than 10.
-- `GetLength`: This private method calculates the number of digits in the given integer. It uses a switch statement to handle different ranges of numbers efficiently.
+_Notes_:
+- Use a 2D array, a list of cells, or any other suitable data structure to grid representation.
+- Use the following evolution rules:
+    - Any live cell with fewer than two live neighbors dies (underpopulation).
+    - Any live cell with two or three live neighbors lives on to the next generation.
+    - Any live cell with more than three live neighbors dies (overpopulation).
+    - Any dead cell with exactly three live neighbors becomes a live cell (reproduction).
 
-_Note_: To determine if a number is a palindrome, you must implement the solution without using arrays, collections, or the string class: use only basic numerical operations and logical comparisons.
-
-To get insights into the benefits of parallel processing when dealing with computationally intensive tasks like filtering palindrome numbers from a large collection of integers compare the efficiency of the two approaches in terms of performance (see [GetPalindromeInParallel_PerformanceTest](PalindromeNumberFiltering.Tests/SelectorTestsParallelApproach.cs#L28) and [GetPalindromeInSequence_PerformanceTest](PalindromeNumberFiltering.Tests/SelectorTestsSequentialApproach.cs#L24)). 
+3. Implement an `GameOfLifeExtension` extension class that provides extention methods to simulate and visualize the evolution of Conway's Game of Life using the provided `GameOfLifeSequentialVersion` and `GameOfLifeParallelVersion` classes. The extension methods should run the simulation for a specified number of generations and display the grid at each step.
+- The `Simulate` method should run the simulation for the specified number of generations, calling the `NextGeneration` method of the `GameOfLifeSequentialVersion` class. At each generation, it should write the generation number and the current grid state to the `writer` using the provided characters for alive and dead cells.
+- The `SimulateAsync` method should function similarly to the `Simulate` method, but with the additional capability of asynchronous writing. It should use the `await` keyword to write the generation number and the current grid state asynchronously to the `writer` at each generation.
