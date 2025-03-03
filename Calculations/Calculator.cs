@@ -17,7 +17,15 @@ public static class Calculator
     /// <exception cref="ArgumentOutOfRangeException">Throw if n less or equals zero.</exception>
     public static long CalculateSum(int n)
     {
-        throw new NotImplementedException();
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+
+        long sum = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            sum += i;
+        }
+
+        return sum;
     }
 
     /// <summary>
